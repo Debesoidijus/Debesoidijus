@@ -2,10 +2,14 @@
 import validators
 import re
 import requests
-import lxml.html as lh
-import pandas as pd
-url= input("Iveskite norima url ")  #Create a handle, page, to handle the contents of the website
-regex = input("Iveskite zodi, kurio pasikartojimu kiek norite rasti svetaineja ")
+import sys
+from lxml import html
+from bs4 import BeautifulSoup
+# import lxml.html as lh
+# import pandas as pd
+# url, regex = input("Iveskite norima url "), input("Iveskite zodi, kurio pasikartojimu kieki norite rasti svetaineje ")
+url = sys.argv[1]
+regex = sys.argv[2]
 if validators.url(url) != True:
     print("Neteisingai ivestas url")
     exit()
@@ -14,11 +18,16 @@ try:
     regexTrue = True
 except re.error:
     regexTrue = False
+    print("ivestas ieskomas zodis nebuvo regex")
+    exit()
 
-print(regexTrue)
-print(url)
-print(regex)
+responsas = requests.get(url)
+tekstas = str(responsas.content)
+# print(url)
+# print(regex)
 
+tekstas=tekstas.lower() 
+print(tekstas.count(regex))
 
 
 
